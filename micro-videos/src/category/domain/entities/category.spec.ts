@@ -47,9 +47,29 @@ describe('Category Tets', () => {
   });
 
   test('if id field', () => {
-    const category = new Category({
+    let category = new Category({
       name: 'Movie',
     });
+
+    expect(category.id).not.toBeNull();
+    expect(validate(category.id)).toBeTruthy();
+
+    category = new Category(
+      {
+        name: 'Movie',
+      },
+      null,
+    );
+
+    expect(category.id).not.toBeNull();
+    expect(validate(category.id)).toBeTruthy();
+
+    category = new Category(
+      {
+        name: 'Movie',
+      },
+      undefined,
+    );
 
     expect(category.id).not.toBeNull();
     expect(validate(category.id)).toBeTruthy();
