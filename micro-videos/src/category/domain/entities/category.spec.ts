@@ -1,5 +1,5 @@
 import { omit } from 'lodash';
-import { validate } from 'uuid';
+import UniqueEntityId from '../../../shared/domain/unique-entity-id';
 import { Category } from './category';
 
 describe('Category Tets', () => {
@@ -47,12 +47,15 @@ describe('Category Tets', () => {
   });
 
   test('if id field', () => {
-    let category = new Category({
-      name: 'Movie',
-    });
+    let category = new Category(
+      {
+        name: 'Movie',
+      },
+      new UniqueEntityId(),
+    );
 
     expect(category.id).not.toBeNull();
-    expect(validate(category.id)).toBeTruthy();
+    expect(category.id).toBeInstanceOf(UniqueEntityId);
 
     category = new Category(
       {
@@ -62,7 +65,7 @@ describe('Category Tets', () => {
     );
 
     expect(category.id).not.toBeNull();
-    expect(validate(category.id)).toBeTruthy();
+    expect(category.id).toBeInstanceOf(UniqueEntityId);
 
     category = new Category(
       {
@@ -72,6 +75,6 @@ describe('Category Tets', () => {
     );
 
     expect(category.id).not.toBeNull();
-    expect(validate(category.id)).toBeTruthy();
+    expect(category.id).toBeInstanceOf(UniqueEntityId);
   });
 });
