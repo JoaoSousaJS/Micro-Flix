@@ -7,7 +7,7 @@ RUN mkdir -p /usr/share/man/man1 && \
     ca-certificates \
     openjdk-11-jre
 
-ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-arm64"
 
 USER node
 
