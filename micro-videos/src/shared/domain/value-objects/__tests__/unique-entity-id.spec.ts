@@ -1,5 +1,5 @@
+import InvalidUuidError from 'category/domain/errors/invalid-uuid.error';
 import { v4, validate } from 'uuid';
-import InvalidUuidError from '../../../../category/domain/errors/invalid-uuid.error';
 import UniqueEntityId from '../unique-entity-id';
 
 function spyValidationMethod() {
