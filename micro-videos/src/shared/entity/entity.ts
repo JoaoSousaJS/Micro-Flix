@@ -1,12 +1,20 @@
-import UniqueEntityId from '../domain/value-objects/unique-entity-id';
+import UniqueEntityId from 'shared/domain/value-objects/unique-entity-id';
 
-export default class Entity {
-  public readonly id: UniqueEntityId;
+export default class Entity<Props> {
+  public readonly uniqueEntityId: UniqueEntityId;
 
-  constructor(public readonly props: CategoryProperties, id?: UniqueEntityId) {
-    this.id = id || new UniqueEntityId();
-    this.description = this.props.description;
-    this.props.is_active = this.props.is_active ?? true;
-    this.props.created_at = this.props.created_at ?? new Date();
+  constructor(public readonly props: Props, id?: UniqueEntityId) {
+    this.uniqueEntityId = id || new UniqueEntityId();
+  }
+
+  get id() {
+    return this.uniqueEntityId.value;
+  }
+
+  toJSON(): Required<{id: string} & Props> {
+    return {
+      id: this.id,
+      ...this.props,
+    } as Required<{id: string} & Props>;
   }
 }

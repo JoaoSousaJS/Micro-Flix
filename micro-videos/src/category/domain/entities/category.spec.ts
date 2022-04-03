@@ -77,4 +77,53 @@ describe('Category Tets', () => {
     expect(category.id).not.toBeNull();
     expect(category.id).toBeInstanceOf(UniqueEntityId);
   });
+
+  it('should update name and description', () => {
+    let category = new Category({ name: 'Movie', description: 'description' });
+
+    category.updateCategory({
+      name: 'new movie',
+      description: 'new description',
+    });
+
+    expect(category.name).toBe('new movie');
+    expect(category.description).toBe('new description');
+
+    category = new Category({ name: 'Movie' });
+
+    category.updateCategory({
+      name: 'new movie',
+    });
+
+    expect(category.name).toBe('new movie');
+  });
+
+  it('should fail if no name or description was submitted', () => {
+    const category = new Category({ name: 'Movie', description: 'description' });
+
+    expect(category.name).toBe('Movie');
+
+    expect(() => {
+      category.updateCategory({
+        name: '',
+        description: '',
+      });
+    }).toThrow('Must pass name or description');
+  });
+
+  it('must active a category', () => {
+    const category = new Category({ name: 'Movie', is_active: false });
+
+    category.activateCategory();
+
+    expect(category.is_active).toBeTruthy();
+  });
+
+  it('must deactive a category', () => {
+    const category = new Category({ name: 'Movie' });
+
+    category.deactivateCategory();
+
+    expect(category.is_active).toBeFalsy();
+  });
 });
