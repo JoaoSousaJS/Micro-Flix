@@ -55,7 +55,7 @@ describe('Category Tets', () => {
     );
 
     expect(category.id).not.toBeNull();
-    expect(category.id).toBeInstanceOf(UniqueEntityId);
+    expect(category.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
 
     category = new Category(
       {
@@ -65,7 +65,7 @@ describe('Category Tets', () => {
     );
 
     expect(category.id).not.toBeNull();
-    expect(category.id).toBeInstanceOf(UniqueEntityId);
+    expect(category.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
 
     category = new Category(
       {
@@ -75,7 +75,7 @@ describe('Category Tets', () => {
     );
 
     expect(category.id).not.toBeNull();
-    expect(category.id).toBeInstanceOf(UniqueEntityId);
+    expect(category.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
 
   it('should update name and description', () => {
