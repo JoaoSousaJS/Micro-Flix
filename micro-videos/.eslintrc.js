@@ -21,5 +21,6 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'no-underscore-dangle': 'off',
+    'dot-notation': 'off',
   },
 };
