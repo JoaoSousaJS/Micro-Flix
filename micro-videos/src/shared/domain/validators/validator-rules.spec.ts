@@ -1,5 +1,32 @@
-import ValidationError from 'category/domain/errors/validation-error';
 import ValidatorRules from './validator-rules';
+
+type AssertProps = {
+  value: any;
+  property: string;
+  rule: keyof ValidatorRules
+  error: string
+  params?: any[]
+}
+
+function assertIsInvalid({
+  value, property, rule, error, params = [],
+}: AssertProps) {
+  expect(() => {
+    const validator = ValidatorRules.values(value, property);
+    const method = validator[rule];
+    method.apply(validator, params);
+  }).toThrow(error);
+}
+
+function assertIsvalid({
+  value, property, rule, error, params = [],
+}: AssertProps) {
+  expect(() => {
+    const validator = ValidatorRules.values(value, property);
+    const method = validator[rule];
+    method.apply(validator, params);
+  }).not.toThrow(error);
+}
 
 describe('ValidatorRules test', () => {
   test('Values method', () => {
@@ -27,11 +54,12 @@ describe('ValidatorRules test', () => {
       },
     ];
     arrange.forEach((i) => {
-      expect(() => {
-        ValidatorRules.values(i.value, i.property).required();
-      }).toThrow(
-        new ValidationError(i.message),
-      );
+      assertIsInvalid({
+        value: i.value,
+        property: i.property,
+        error: i.message,
+        rule: 'required',
+      });
     });
 
     // valid cases
@@ -50,11 +78,92 @@ describe('ValidatorRules test', () => {
       },
     ];
     arrange.forEach((i) => {
-      expect(() => {
-        ValidatorRules.values(i.value, i.property).required();
-      }).not.toThrow(
-        new ValidationError(i.message),
-      );
+      assertIsvalid({
+        value: i.value,
+        property: i.property,
+        error: i.message,
+        rule: 'required',
+      });
+    });
+  });
+
+  test('string validation rule', () => {
+    // invalid cases
+    let arrange: {
+      value: any;
+      property: string;
+      message: string;
+    }[] = [
+      {
+        value: 5, property: 'field', message: 'The field must be a string',
+      },
+      {
+        value: {}, property: 'field', message: 'The field must be a string',
+      },
+      {
+        value: false, property: 'field', message: 'The field must be a string',
+      },
+    ];
+    arrange.forEach((i) => {
+      assertIsInvalid({
+        value: i.value,
+        property: i.property,
+        error: i.message,
+        rule: 'string',
+      });
+    });
+
+    // valid cases
+    arrange = [
+      {
+        value: 'test', property: 'field', message: 'The field must be a string',
+      },
+    ];
+    arrange.forEach((i) => {
+      assertIsvalid({
+        value: i.value,
+        property: i.property,
+        error: i.message,
+        rule: 'string',
+      });
+    });
+  });
+
+  test('maxlength validation rule', () => {
+    // invalid cases
+    let arrange: {
+      value: any;
+      property: string;
+      message: string;
+    }[] = [
+      {
+        value: 'aaaaa', property: 'field', message: 'The field must be less or equal than 4',
+      },
+    ];
+    arrange.forEach((i) => {
+      assertIsInvalid({
+        value: i.value,
+        property: i.property,
+        error: i.message,
+        rule: 'maxLength',
+        params: [4],
+      });
+    });
+
+    // valid cases
+    arrange = [
+      {
+        value: 'aaaaa', property: 'field', message: 'The field must be less or equal than 5',
+      },
+    ];
+    arrange.forEach((i) => {
+      assertIsvalid({
+        value: i.value,
+        property: i.property,
+        error: i.message,
+        rule: 'maxLength',
+        params: [5],
+      });
     });
   });
 });
