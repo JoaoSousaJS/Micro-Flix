@@ -118,6 +118,12 @@ describe('ValidatorRules test', () => {
       {
         value: 'test', property: 'field', message: 'The field must be a string',
       },
+      {
+        value: null, property: 'field', message: 'The field must be a string',
+      },
+      {
+        value: undefined, property: 'field', message: 'The field must be a string',
+      },
     ];
     arrange.forEach((i) => {
       assertIsvalid({
@@ -155,6 +161,12 @@ describe('ValidatorRules test', () => {
       {
         value: 'aaaaa', property: 'field', message: 'The field must be less or equal than 5',
       },
+      {
+        value: null, property: 'field', message: 'The field must be less or equal than 5',
+      },
+      {
+        value: undefined, property: 'field', message: 'The field must be less or equal than 5',
+      },
     ];
     arrange.forEach((i) => {
       assertIsvalid({
@@ -165,5 +177,78 @@ describe('ValidatorRules test', () => {
         params: [5],
       });
     });
+  });
+
+  test('boolean validation rule', () => {
+    // invalid cases
+    let arrange: {
+      value: any;
+      property: string;
+      message: string;
+    }[] = [
+      {
+        value: 'aaaaa', property: 'field', message: 'The field must be a boolean',
+      },
+      {
+        value: 5, property: 'field', message: 'The field must be a boolean',
+      },
+      {
+        value: 'true', property: 'field', message: 'The field must be a boolean',
+      },
+    ];
+    arrange.forEach((i) => {
+      assertIsInvalid({
+        value: i.value,
+        property: i.property,
+        error: i.message,
+        rule: 'boolean',
+      });
+    });
+
+    // valid cases
+    arrange = [
+      {
+        value: true, property: 'field', message: 'The field must be a boolean',
+      },
+      {
+        value: false, property: 'field', message: 'The field must be a boolean',
+      },
+
+    ];
+    arrange.forEach((i) => {
+      assertIsvalid({
+        value: i.value,
+        property: i.property,
+        error: i.message,
+        rule: 'boolean',
+      });
+    });
+  });
+
+  it('should combine two or more validation rules', () => {
+    let validator = ValidatorRules.values(null, 'field');
+    expect(() => {
+      validator.required().maxLength(5).string();
+    }).toThrow('The field is required');
+
+    validator = ValidatorRules.values(5, 'field');
+    expect(() => {
+      validator.required().maxLength(5).string();
+    }).toThrow('The field must be a string');
+
+    validator = ValidatorRules.values('long string', 'field');
+    expect(() => {
+      validator.required().maxLength(5).string();
+    }).toThrow('The field must be less or equal than 5');
+
+    validator = ValidatorRules.values(null, 'field');
+    expect(() => {
+      validator.required().boolean();
+    }).toThrow('The field is required');
+
+    validator = ValidatorRules.values('true', 'field');
+    expect(() => {
+      validator.required().boolean();
+    }).toThrow('The field must be a boolean');
   });
 });
