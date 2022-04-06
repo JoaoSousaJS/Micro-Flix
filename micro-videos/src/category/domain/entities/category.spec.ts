@@ -108,7 +108,7 @@ describe('Category Tets', () => {
         name: '',
         description: '',
       });
-    }).toThrow('Must pass name or description');
+    }).toThrow('The name is required');
   });
 
   it('must active a category', () => {

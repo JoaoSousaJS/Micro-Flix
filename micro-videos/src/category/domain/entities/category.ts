@@ -1,6 +1,6 @@
+import ValidatorRules from 'shared/domain/validators/validator-rules';
 import Entity from 'shared/entity/entity';
 import UniqueEntityId from '../../../shared/domain/value-objects/unique-entity-id';
-import InvalidParamError from '../errors/invalid-param.error';
 
 export type CategoryProperties = {
   name: string;
@@ -16,6 +16,7 @@ type CategoryUpdateProps = {
 
 export class Category extends Entity<CategoryProperties> {
   constructor(public readonly props: CategoryProperties, id?: UniqueEntityId) {
+    Category.validate(props);
     super(props, id);
     this.description = this.props.description;
     this.props.is_active = this.props.is_active ?? true;
@@ -51,15 +52,20 @@ export class Category extends Entity<CategoryProperties> {
   }
 
   updateCategory = ({ name, description }: CategoryUpdateProps) => {
-    if (!name) {
-      throw new InvalidParamError();
-    }
-
+    Category.validate({
+      name, description,
+    });
     if (description) {
       this.description = description;
     }
 
     this.name = name;
+  }
+
+  static validate(props: Omit<CategoryProperties, 'created_at'>) {
+    ValidatorRules.values(props.name, 'name').required().string();
+    ValidatorRules.values(props.description, 'name').string();
+    ValidatorRules.values(props.is_active, 'is_active').boolean();
   }
 
   activateCategory = () => {

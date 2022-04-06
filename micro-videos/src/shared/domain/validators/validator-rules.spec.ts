@@ -225,7 +225,7 @@ describe('ValidatorRules test', () => {
     });
   });
 
-  it('should combine two or more validation rules', () => {
+  test('should combine two or more validation rules', () => {
     let validator = ValidatorRules.values(null, 'field');
     expect(() => {
       validator.required().maxLength(5).string();
@@ -250,5 +250,14 @@ describe('ValidatorRules test', () => {
     expect(() => {
       validator.required().boolean();
     }).toThrow('The field must be a boolean');
+  });
+
+  it('should validate when combine two or more validation rules', () => {
+    expect.assertions(0);
+    ValidatorRules.values('test', 'field').required().string();
+    ValidatorRules.values('test', 'field').required().string().maxLength(5);
+
+    ValidatorRules.values(true, 'field').required().boolean();
+    ValidatorRules.values(false, 'field').required().boolean();
   });
 });
