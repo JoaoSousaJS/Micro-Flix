@@ -1,3 +1,4 @@
+import CategoryValidatorFactory from 'category/validators/category.validator';
 import ValidatorRules from 'shared/domain/validators/validator-rules';
 import Entity from 'shared/entity/entity';
 import UniqueEntityId from '../../../shared/domain/value-objects/unique-entity-id';
@@ -62,10 +63,15 @@ export class Category extends Entity<CategoryProperties> {
     this.name = name;
   }
 
-  static validate(props: Omit<CategoryProperties, 'created_at'>) {
-    ValidatorRules.values(props.name, 'name').required().string().maxLength(255);
-    ValidatorRules.values(props.description, 'name').string();
-    ValidatorRules.values(props.is_active, 'is_active').boolean();
+  // static validate(props: Omit<CategoryProperties, 'created_at'>) {
+  //   ValidatorRules.values(props.name, 'name').required().string().maxLength(255);
+  //   ValidatorRules.values(props.description, 'name').string();
+  //   ValidatorRules.values(props.is_active, 'is_active').boolean();
+  // }
+
+  static validate(props: CategoryProperties) {
+    const validator = CategoryValidatorFactory.create();
+    validator.validate(props);
   }
 
   activateCategory = () => {

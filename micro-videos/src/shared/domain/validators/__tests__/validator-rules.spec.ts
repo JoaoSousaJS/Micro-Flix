@@ -1,4 +1,4 @@
-import ValidatorRules from './validator-rules';
+import ValidatorRules from '../validator-rules';
 
 type AssertProps = {
   value: any;

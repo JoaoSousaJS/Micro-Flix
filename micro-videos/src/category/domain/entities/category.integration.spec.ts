@@ -13,6 +13,6 @@ describe('Category integration test', () => {
 
     expect(() => new Category({
       name: 't'.repeat(256),
-    })).toThrow(new ValidationError('The name must be less or equal than 255'));
+    })).toThrow(new ValidationError('The name must be less or equal than 255'))
   });
 });

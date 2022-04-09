@@ -22,5 +22,6 @@ module.exports = {
     'import/extensions': 'off',
     'no-underscore-dangle': 'off',
     'dot-notation': 'off',
+    'max-classes-per-file': 'off',
   },
 };
