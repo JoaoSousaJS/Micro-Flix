@@ -3,10 +3,14 @@ import UniqueEntityId from '../../../shared/domain/value-objects/unique-entity-i
 import { Category } from './category';
 
 describe('Category Tets', () => {
+  beforeEach(() => {
+    Category.validate = jest.fn();
+  });
   test('constructor of category - Name', () => {
     const category = new Category({ name: 'Movie' });
 
     const props = omit(category.props, 'created_at');
+    expect(Category.validate).toHaveBeenCalled();
 
     expect(props).toStrictEqual({
       name: 'Movie',
@@ -85,6 +89,7 @@ describe('Category Tets', () => {
       name: 'new movie',
       description: 'new description',
     });
+    expect(Category.validate).toHaveBeenCalledTimes(2);
 
     expect(category.name).toBe('new movie');
     expect(category.description).toBe('new description');
