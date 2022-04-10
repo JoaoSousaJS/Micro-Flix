@@ -1,4 +1,4 @@
-import CategoryValidatorFactory, { CategoryValidator } from './category.validator';
+import CategoryValidatorFactory, { CategoryRules, CategoryValidator } from './category.validator';
 
 describe('CategoryValidator tests', () => {
   let validator: CategoryValidator;
@@ -34,5 +34,59 @@ describe('CategoryValidator tests', () => {
     expect(validator.errors['name']).toStrictEqual([
       'name must be shorter than or equal to 255 characters',
     ]);
+  });
+
+  test('valid cases for fields', () => {
+    let isValid = validator.validate({
+      name: 'some value',
+    });
+    expect(isValid).toBeTruthy();
+    expect(validator.validatedData).toStrictEqual(new CategoryRules({
+      name: 'some value',
+    }));
+
+    isValid = validator.validate({
+      name: 'some value',
+      description: undefined,
+    });
+
+    expect(isValid).toBeTruthy();
+    expect(validator.validatedData).toStrictEqual(new CategoryRules({
+      name: 'some value',
+      description: undefined,
+    }));
+
+    isValid = validator.validate({
+      name: 'some value',
+      description: null,
+    });
+
+    expect(isValid).toBeTruthy();
+    expect(validator.validatedData).toStrictEqual(new CategoryRules({
+      name: 'some value',
+      description: null,
+    }));
+
+    isValid = validator.validate({
+      name: 'some value',
+      is_active: true,
+    });
+
+    expect(isValid).toBeTruthy();
+    expect(validator.validatedData).toStrictEqual(new CategoryRules({
+      name: 'some value',
+      is_active: true,
+    }));
+
+    isValid = validator.validate({
+      name: 'some value',
+      is_active: false,
+    });
+
+    expect(isValid).toBeTruthy();
+    expect(validator.validatedData).toStrictEqual(new CategoryRules({
+      name: 'some value',
+      is_active: false,
+    }));
   });
 });
