@@ -1,4 +1,4 @@
-import InvalidUuidError from 'category/domain/errors/invalid-uuid.error';
+import InvalidUuidError from 'shared/domain/errors/invalid-uuid.error';
 import { v4, validate } from 'uuid';
 import UniqueEntityId from '../unique-entity-id';
 

@@ -1,8 +1,8 @@
-import { CategoryProperties } from 'category/domain/entities/category';
 import {
   IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, MaxLength,
 } from 'class-validator';
 import ClassValidatorFields from 'shared/domain/validators/class-validator-fields';
+import { CategoryProperties } from '../entities/category';
 
 export class CategoryRules {
   @MaxLength(255)

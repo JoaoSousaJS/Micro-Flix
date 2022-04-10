@@ -1,7 +1,6 @@
-import CategoryValidatorFactory from 'category/validators/category.validator';
-import ValidatorRules from 'shared/domain/validators/validator-rules';
 import Entity from 'shared/entity/entity';
 import UniqueEntityId from '../../../shared/domain/value-objects/unique-entity-id';
+import CategoryValidatorFactory from '../validators/category.validator';
 
 export type CategoryProperties = {
   name: string;

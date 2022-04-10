@@ -1,4 +1,4 @@
-import ValidationError from '../errors/validation-error';
+import ValidationError from '../../../shared/domain/errors/validation-error';
 import { Category } from './category';
 
 describe('Category integration test', () => {
@@ -13,6 +13,6 @@ describe('Category integration test', () => {
 
     expect(() => new Category({
       name: 't'.repeat(256),
-    })).toThrow(new ValidationError('The name must be less or equal than 255'))
+    })).toThrow(new ValidationError('The name must be less or equal than 255'));
   });
 });
