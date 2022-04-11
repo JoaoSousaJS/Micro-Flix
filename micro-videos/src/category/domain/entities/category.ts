@@ -1,3 +1,4 @@
+import { EntityValidationError } from 'shared/domain/errors/validation-error';
 import Entity from 'shared/entity/entity';
 import UniqueEntityId from '../../../shared/domain/value-objects/unique-entity-id';
 import CategoryValidatorFactory from '../validators/category.validator';
@@ -71,6 +72,10 @@ export class Category extends Entity<CategoryProperties> {
   static validate(props: CategoryProperties) {
     const validator = CategoryValidatorFactory.create();
     validator.validate(props);
+
+    if (!validator.errors) {
+      throw new EntityValidationError(validator.errors);
+    }
   }
 
   activateCategory = () => {

@@ -111,7 +111,6 @@ describe('Category Tets', () => {
     expect(() => {
       category.updateCategory({
         name: '',
-        description: '',
       });
     }).toThrow('The name is required');
   });

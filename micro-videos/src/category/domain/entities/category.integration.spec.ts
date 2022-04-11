@@ -1,18 +1,31 @@
-import ValidationError from '../../../shared/domain/errors/validation-error';
 import { Category } from './category';
 
 describe('Category integration test', () => {
   it('should validate invalid names', () => {
     expect(() => new Category({
       name: null,
-    })).toThrow(new ValidationError('The name is required'));
+    })).containsErrorMessages({
+      name: [
+        'name should not be empty',
+        'name must be a string',
+        'name must be shorter than or equal to 255 characters',
+      ],
+    });
 
     expect(() => new Category({
       name: '',
-    })).toThrow(new ValidationError('The name is required'));
+    })).containsErrorMessages({
+      name: [
+        'name should not be empty',
+      ],
+    });
 
     expect(() => new Category({
       name: 't'.repeat(256),
-    })).toThrow(new ValidationError('The name must be less or equal than 255'));
+    })).containsErrorMessages({
+      name: [
+        'name must be shorter than or equal to 255 characters',
+      ],
+    });
   });
 });
