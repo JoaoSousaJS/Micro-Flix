@@ -23,5 +23,6 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'dot-notation': 'off',
     'max-classes-per-file': 'off',
+    'class-methods-use-this': 'off',
   },
 };
